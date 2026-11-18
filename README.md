@@ -1,8 +1,8 @@
 # pipefetch
 
 YouTube transcripts, video details, channels, search and comments as JSON, from Python, and what a
-company's website publishes: its contact details and its brand. This is the client for the
-[Pipefetch API](https://pipefetch.com).
+company's website publishes (its contact details and its brand), plus public Instagram profiles. This
+is the client for the [Pipefetch API](https://pipefetch.com).
 
 - No dependencies: it uses only the standard library. Python 3.9 or newer.
 - Runs the same on your laptop and on a server, with no proxies to manage.
@@ -34,7 +34,8 @@ print(transcript["text"])
 
 Each method is one request and returns the `data` of the answer as a `dict`. Videos can be given as
 an ID or any YouTube URL; channels as a handle (`@mkbhd`), a channel ID or a channel URL; websites as
-a domain (`stripe.com`) or any address on the site.
+a domain (`stripe.com`) or any address on the site; Instagram accounts as a username, a handle or a
+profile URL.
 
 | Method | Returns | Credits |
 |---|---|---|
@@ -47,6 +48,7 @@ a domain (`stripe.com`) or any address on the site.
 | `comments(video, limit=, sort=)` | Top or newest comments, up to 100 | 1 per started 20 |
 | `website_contacts(url, pages=)` | The emails, phone numbers and social profiles a website publishes, its contact page and address | 1 |
 | `website_brand(url)` | A company's name, logo, icon, brand colors, fonts and social profiles | 1 |
+| `instagram_profile(username, posts=)` | A public Instagram account: exact followers, bio, links, engagement, latest posts and Reels | 2 |
 | `account()` | The account's email and credit balance | free |
 
 Every parameter and every field of the answers is in the [reference](https://pipefetch.com/docs).
@@ -75,6 +77,10 @@ print(contacts["primaryEmail"], contacts["socials"]["linkedin"])
 # A company's logo and colors
 brand = pf.website_brand("stripe.com")
 print(brand["name"], brand["logo"], brand["colors"]["primary"])
+
+# A public Instagram account (2 credits)
+profile = pf.instagram_profile("nasa")
+print(profile["followerCount"], profile["engagementRate"], len(profile["latestPosts"]))
 ```
 
 ## Credits
@@ -93,7 +99,7 @@ charged. The common ones have their own classes:
 
 | Class | Status | When |
 |---|---|---|
-| `NotFoundError` | 404 | There is nothing to return: no such video, no captions, no results, comments turned off, a website that is unreachable or shows no contacts |
+| `NotFoundError` | 404 | There is nothing to return: no such video, no captions, no results, comments turned off, a website that is unreachable or shows no contacts, no such Instagram account |
 | `InvalidRequestError` | 400 | A parameter is missing, unknown or not allowed |
 | `AuthenticationError` | 401 | The API key is missing or not valid |
 | `InsufficientCreditsError` | 402 | The account has fewer credits than the request costs |
@@ -127,8 +133,8 @@ pf = Pipefetch(
 
 ## Good to know
 
-- Every answer is fetched live from YouTube or from the website you name, so it is current and a
-  request takes a few seconds.
+- Every answer is fetched live from YouTube, Instagram or the website you name, so it is current and
+  a request takes a few seconds.
 - Each request returns one page: the latest 30 uploads, up to 40 search results, up to 100 comments.
 - Keep the key on your server. Anyone who has it can spend its credits.
 - Pipefetch is an independent service. It is not affiliated with, endorsed by or sponsored by

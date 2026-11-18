@@ -10,7 +10,7 @@ import urllib.parse
 import urllib.request
 from typing import Any, Callable, Dict, Optional, Tuple
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 DEFAULT_BASE_URL = "https://pipefetch.com"
 # Statuses that mean "try again": the request was not charged and may succeed on a retry.
@@ -161,6 +161,10 @@ class Pipefetch:
     def website_brand(self, url: str) -> Dict[str, Any]:
         """A company's logo, icon, brand colors, fonts, description and social profiles, read from its website. 1 credit."""
         return self._get("/v1/web/brand", url=url)
+
+    def instagram_profile(self, username: str, *, posts: Optional[bool] = None) -> Dict[str, Any]:
+        """A public Instagram account: exact counts, bio, links, engagement and its latest posts and Reels. 2 credits."""
+        return self._get("/v1/instagram/profile", username=username, posts=posts)
 
     def account(self) -> Dict[str, Any]:
         """The account behind the key: its email and credit balance. Free."""

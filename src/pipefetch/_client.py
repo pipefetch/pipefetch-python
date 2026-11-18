@@ -10,7 +10,7 @@ import urllib.parse
 import urllib.request
 from typing import Any, Callable, Dict, Optional, Tuple
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 DEFAULT_BASE_URL = "https://pipefetch.com"
 # Statuses that mean "try again": the request was not charged and may succeed on a retry.
@@ -153,6 +153,14 @@ class Pipefetch:
     def comments(self, video: str, *, limit: Optional[int] = None, sort: Optional[str] = None) -> Dict[str, Any]:
         """Top or newest comments of a video (up to 100). 1 credit per started 20 comments."""
         return self._get("/v1/youtube/comments", video=video, limit=limit, sort=sort)
+
+    def website_contacts(self, url: str, *, pages: Optional[int] = None) -> Dict[str, Any]:
+        """The emails, phone numbers and social profiles a website publishes, with its contact page and address. 1 credit."""
+        return self._get("/v1/web/contacts", url=url, pages=pages)
+
+    def website_brand(self, url: str) -> Dict[str, Any]:
+        """A company's logo, icon, brand colors, fonts, description and social profiles, read from its website. 1 credit."""
+        return self._get("/v1/web/brand", url=url)
 
     def account(self) -> Dict[str, Any]:
         """The account behind the key: its email and credit balance. Free."""

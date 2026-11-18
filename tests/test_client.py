@@ -71,6 +71,8 @@ class ClientTest(unittest.TestCase):
         pf.channel_shorts("@MrBeast")
         pf.search("web scraping", sort="newest", uploaded="week", limit=40)
         pf.comments("jNQXAC9IVRw", limit=100, sort="newest")
+        pf.website_contacts("apify.com", pages=3)
+        pf.website_brand("https://stripe.com")
         pf.account()
         asked = [url.replace("https://pipefetch.com", "") for url, _, _ in fake.calls]
         self.assertEqual(
@@ -82,6 +84,8 @@ class ClientTest(unittest.TestCase):
                 "/v1/youtube/channel/shorts?channel=%40MrBeast",
                 "/v1/youtube/search?q=web+scraping&limit=40&sort=newest&uploaded=week",
                 "/v1/youtube/comments?video=jNQXAC9IVRw&limit=100&sort=newest",
+                "/v1/web/contacts?url=apify.com&pages=3",
+                "/v1/web/brand?url=https%3A%2F%2Fstripe.com",
                 "/v1/account",
             ],
         )

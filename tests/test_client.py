@@ -74,6 +74,7 @@ class ClientTest(unittest.TestCase):
         pf.website_contacts("apify.com", pages=3)
         pf.website_brand("https://stripe.com")
         pf.instagram_profile("@nasa", posts=False)
+        pf.get("/v1/some/new-endpoint", id="abc", limit=3, skip=None)
         pf.account()
         asked = [url.replace("https://pipefetch.com", "") for url, _, _ in fake.calls]
         self.assertEqual(
@@ -88,6 +89,7 @@ class ClientTest(unittest.TestCase):
                 "/v1/web/contacts?url=apify.com&pages=3",
                 "/v1/web/brand?url=https%3A%2F%2Fstripe.com",
                 "/v1/instagram/profile?username=%40nasa&posts=false",
+                "/v1/some/new-endpoint?id=abc&limit=3",
                 "/v1/account",
             ],
         )

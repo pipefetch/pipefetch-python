@@ -1,8 +1,8 @@
 # pipefetch
 
-YouTube transcripts, video details, channels, search and comments as JSON, from Python, and what a
-company's website publishes (its contact details and its brand), plus public Instagram profiles. This
-is the client for the [Pipefetch API](https://pipefetch.com).
+Public web data as JSON, from Python: video platforms, social networks and company websites through
+one API key. This is the client for the [Pipefetch API](https://pipefetch.com); the sources and
+endpoints it offers today are listed at [pipefetch.com/#apis](https://pipefetch.com/#apis).
 
 - No dependencies: it uses only the standard library. Python 3.9 or newer.
 - Runs the same on your laptop and on a server, with no proxies to manage.
@@ -49,9 +49,17 @@ profile URL.
 | `website_contacts(url, pages=)` | The emails, phone numbers and social profiles a website publishes, its contact page and address | 1 |
 | `website_brand(url)` | A company's name, logo, icon, brand colors, fonts and social profiles | 1 |
 | `instagram_profile(username, posts=)` | A public Instagram account: exact followers, bio, links, engagement, latest posts and Reels | 2 |
+| `get(path, **params)` | Any endpoint by its path, including ones added after this version | as documented |
 | `account()` | The account's email and credit balance | free |
 
 Every parameter and every field of the answers is in the [reference](https://pipefetch.com/docs).
+
+Pipefetch adds endpoints over time. One that is newer than your version of this library works through
+`get()` straight away:
+
+```python
+data = pf.get("/v1/web/brand", url="stripe.com")
+```
 
 ```python
 # A subtitle file
@@ -133,12 +141,11 @@ pf = Pipefetch(
 
 ## Good to know
 
-- Every answer is fetched live from YouTube, Instagram or the website you name, so it is current and
-  a request takes a few seconds.
+- Every answer is fetched live from its source, so it is current and a request takes a few seconds.
 - Each request returns one page: the latest 30 uploads, up to 40 search results, up to 100 comments.
 - Keep the key on your server. Anyone who has it can spend its credits.
-- Pipefetch is an independent service. It is not affiliated with, endorsed by or sponsored by
-  YouTube or Google.
+- Pipefetch is an independent service. It is not affiliated with, endorsed by or sponsored by the
+  sites it reads or their owners.
 
 ## Links
 

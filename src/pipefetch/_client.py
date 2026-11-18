@@ -10,7 +10,7 @@ import urllib.parse
 import urllib.request
 from typing import Any, Callable, Dict, Optional, Tuple
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 DEFAULT_BASE_URL = "https://pipefetch.com"
 # Statuses that mean "try again": the request was not charged and may succeed on a retry.
@@ -165,6 +165,16 @@ class Pipefetch:
     def instagram_profile(self, username: str, *, posts: Optional[bool] = None) -> Dict[str, Any]:
         """A public Instagram account: exact counts, bio, links, engagement and its latest posts and Reels. 2 credits."""
         return self._get("/v1/instagram/profile", username=username, posts=posts)
+
+    def get(self, path: str, **params: Any) -> Dict[str, Any]:
+        """Any endpoint, by its path: get("/v1/web/brand", url="stripe.com").
+
+        Use it for endpoints that are newer than this version of the library; the reference at
+        pipefetch.com/docs lists them all.
+        """
+        if not isinstance(path, str) or not path.startswith("/v1/"):
+            raise InvalidRequestError('get() takes the path of an endpoint, such as "/v1/youtube/video".', None, "invalid_request")
+        return self._get(path, **params)
 
     def account(self) -> Dict[str, Any]:
         """The account behind the key: its email and credit balance. Free."""
